@@ -17,7 +17,6 @@ export function Support() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<SupportFieldErrors>({});
-  const [formError, setFormError] = useState('');
 
   const updateField = (field: SupportFieldName, value: string) => {
     setFormData((current) => ({ ...current, [field]: value }));
@@ -33,7 +32,6 @@ export function Support() {
     e.preventDefault();
     setIsSubmitting(true);
     setFieldErrors({});
-    setFormError('');
 
     const result = await presenter.submitForm(formData);
 
@@ -42,13 +40,9 @@ export function Support() {
       setIsSubmitted(true);
       setFormData({ name: '', email: '', message: '', hp: '' });
       setFieldErrors({});
-      setFormError('');
       setTimeout(() => setIsSubmitted(false), 5000);
     } else if (result.fieldErrors) {
       setFieldErrors(result.fieldErrors);
-      setFormError(result.message);
-    } else {
-      setFormError(result.message);
     }
   };
 

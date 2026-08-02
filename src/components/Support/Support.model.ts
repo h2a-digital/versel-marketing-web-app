@@ -15,7 +15,6 @@ export type SupportSubmitResult =
     }
   | {
       ok: false;
-      message: string;
       fieldErrors?: SupportFieldErrors;
     };
 

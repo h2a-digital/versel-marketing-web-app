@@ -81,7 +81,6 @@ export default class SupportPresenter {
 
       return {
         ok: false,
-        message: result.error.message || validationMessage,
         fieldErrors,
       };
     }
