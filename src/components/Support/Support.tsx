@@ -4,10 +4,11 @@ import { site } from '@/content/site';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import SupportPresenter from './Support.presenter';
+import type { SupportFieldErrors, SupportFormState, SupportFieldName } from './Support.model';
 
 export function Support() {
   const presenter = new SupportPresenter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SupportFormState>({
     name: '',
     email: '',
     message: '',
@@ -15,18 +16,39 @@ export function Support() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<SupportFieldErrors>({});
+  const [formError, setFormError] = useState('');
+
+  const updateField = (field: SupportFieldName, value: string) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+    setFieldErrors((current) => {
+      if (!current[field]) return current;
+      const next = { ...current };
+      delete next[field];
+      return next;
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setFieldErrors({});
+    setFormError('');
 
-    const ok = await presenter.submitForm(formData);
+    const result = await presenter.submitForm(formData);
 
     setIsSubmitting(false);
-    if (ok) {
+    if (result.ok) {
       setIsSubmitted(true);
       setFormData({ name: '', email: '', message: '', hp: '' });
+      setFieldErrors({});
+      setFormError('');
       setTimeout(() => setIsSubmitted(false), 5000);
+    } else if (result.fieldErrors) {
+      setFieldErrors(result.fieldErrors);
+      setFormError(result.message);
+    } else {
+      setFormError(result.message);
     }
   };
 
@@ -67,11 +89,22 @@ export function Support() {
                   id="name"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full rounded-xl border border-[#514033] bg-[#15110D] px-4 py-3 text-white transition-colors placeholder:text-zinc-500 focus:border-[#C9823A] focus:ring-2 focus:ring-[#C9823A] focus:ring-offset-2 focus:ring-offset-[#231D17]"
+                  onChange={(e) => updateField('name', e.target.value)}
+                  aria-invalid={Boolean(fieldErrors.name)}
+                  aria-describedby={fieldErrors.name ? 'name-error' : undefined}
+                  className={`w-full rounded-xl border bg-[#15110D] px-4 py-3 text-white transition-colors placeholder:text-zinc-500 focus:ring-2 focus:ring-[#C9823A] focus:ring-offset-2 focus:ring-offset-[#231D17] ${
+                    fieldErrors.name
+                      ? 'border-[#F28B82] focus:border-[#F28B82]'
+                      : 'border-[#514033] focus:border-[#C9823A]'
+                  }`}
                   placeholder="Your name"
                   disabled={isSubmitting}
                 />
+                {fieldErrors.name && (
+                  <p id="name-error" className="mt-2 text-sm text-[#F28B82]">
+                    {fieldErrors.name}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -83,11 +116,22 @@ export function Support() {
                   id="email"
                   required
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full rounded-xl border border-[#514033] bg-[#15110D] px-4 py-3 text-white transition-colors placeholder:text-zinc-500 focus:border-[#C9823A] focus:ring-2 focus:ring-[#C9823A] focus:ring-offset-2 focus:ring-offset-[#231D17]"
+                  onChange={(e) => updateField('email', e.target.value)}
+                  aria-invalid={Boolean(fieldErrors.email)}
+                  aria-describedby={fieldErrors.email ? 'email-error' : undefined}
+                  className={`w-full rounded-xl border bg-[#15110D] px-4 py-3 text-white transition-colors placeholder:text-zinc-500 focus:ring-2 focus:ring-[#C9823A] focus:ring-offset-2 focus:ring-offset-[#231D17] ${
+                    fieldErrors.email
+                      ? 'border-[#F28B82] focus:border-[#F28B82]'
+                      : 'border-[#514033] focus:border-[#C9823A]'
+                  }`}
                   placeholder="your@email.com"
                   disabled={isSubmitting}
                 />
+                {fieldErrors.email && (
+                  <p id="email-error" className="mt-2 text-sm text-[#F28B82]">
+                    {fieldErrors.email}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -99,11 +143,22 @@ export function Support() {
                   required
                   rows={5}
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full resize-none rounded-xl border border-[#514033] bg-[#15110D] px-4 py-3 text-white transition-colors placeholder:text-zinc-500 focus:border-[#C9823A] focus:ring-2 focus:ring-[#C9823A] focus:ring-offset-2 focus:ring-offset-[#231D17]"
+                  onChange={(e) => updateField('message', e.target.value)}
+                  aria-invalid={Boolean(fieldErrors.message)}
+                  aria-describedby={fieldErrors.message ? 'message-error' : undefined}
+                  className={`w-full resize-none rounded-xl border bg-[#15110D] px-4 py-3 text-white transition-colors placeholder:text-zinc-500 focus:ring-2 focus:ring-[#C9823A] focus:ring-offset-2 focus:ring-offset-[#231D17] ${
+                    fieldErrors.message
+                      ? 'border-[#F28B82] focus:border-[#F28B82]'
+                      : 'border-[#514033] focus:border-[#C9823A]'
+                  }`}
                   placeholder="Tell us how we can help..."
                   disabled={isSubmitting}
                 />
+                {fieldErrors.message && (
+                  <p id="message-error" className="mt-2 text-sm text-[#F28B82]">
+                    {fieldErrors.message}
+                  </p>
+                )}
               </div>
 
               <button

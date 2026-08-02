@@ -5,6 +5,20 @@ export type SupportFormState = {
   hp: string; // honeypot
 };
 
+export type SupportFieldName = keyof SupportFormState;
+
+export type SupportFieldErrors = Partial<Record<SupportFieldName, string>>;
+
+export type SupportSubmitResult =
+  | {
+      ok: true;
+    }
+  | {
+      ok: false;
+      message: string;
+      fieldErrors?: SupportFieldErrors;
+    };
+
 export type SupportFormVM = SupportFormState & {
   isSubmitting: boolean;
   hasSubmitted: boolean;

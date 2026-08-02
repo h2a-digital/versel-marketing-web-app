@@ -39,8 +39,19 @@ export async function POST(req: Request) {
     const body = await req.json();
     const parsed = ContactSchema.safeParse(body);
     if (!parsed.success) {
+      const fieldNames = Object.keys(parsed.error.flatten().fieldErrors);
       return NextResponse.json(
-        { ok: false, error: { kind: 'Validation', message: 'Invalid input' } },
+        {
+          ok: false,
+          error: {
+            kind: 'Validation',
+            message:
+              fieldNames.length > 0
+                ? `Invalid input: ${fieldNames.join(', ')}`
+                : 'Invalid input',
+            cause: parsed.error.flatten(),
+          },
+        },
         { status: 400 }
       );
     }
