@@ -2,8 +2,8 @@ import { notFound, permanentRedirect } from 'next/navigation';
 import { site } from '@/content/site';
 
 const campaignRedirects = {
-  // m3Vn9: site.store.campaigns.m3Vn9,
-  // t7Kp1: site.store.campaigns.t7Kp1,
+  L4pX7: site.store.campaigns.L4pX7,
+  q8Rz2: site.store.campaigns.q8Rz2,
 } as const;
 
 type CampaignSource = keyof typeof campaignRedirects;
