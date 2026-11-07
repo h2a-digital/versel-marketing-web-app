@@ -11,6 +11,10 @@ export const site = {
       q8Rz2: 'https://apps.apple.com/app/apple-store/id6793234841?pt=128321398&ct=tiktok_bio&mt=8',
       L4pX7:
         'https://apps.apple.com/app/apple-store/id6793234841?pt=128321398&ct=instagram_bio&mt=8',
+      N6vK3:
+        'https://apps.apple.com/app/apple-store/id6793234841?pt=128321398&ct=daniela_insta&mt=8',
+      w9Tm5:
+        'https://apps.apple.com/app/apple-store/id6793234841?pt=128321398&ct=daniela_tiktok&mt=8',
     },
     // androidUrl: 'https://play.google.com/store/apps/details?id=TBD',
   },

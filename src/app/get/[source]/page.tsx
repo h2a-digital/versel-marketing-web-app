@@ -4,6 +4,8 @@ import { site } from '@/content/site';
 const campaignRedirects = {
   L4pX7: site.store.campaigns.L4pX7,
   q8Rz2: site.store.campaigns.q8Rz2,
+  N6vK3: site.store.campaigns.N6vK3,
+  w9Tm5: site.store.campaigns.w9Tm5,
 } as const;
 
 type CampaignSource = keyof typeof campaignRedirects;
