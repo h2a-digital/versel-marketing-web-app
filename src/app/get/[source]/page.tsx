@@ -8,6 +8,9 @@ const campaignRedirects = {
   w9Tm5: site.store.campaigns.w9Tm5,
   F7nQ4: site.store.campaigns.F7nQ4,
   y3Hv8: site.store.campaigns.y3Hv8,
+  a7Kp2: site.store.campaigns.a7Kp2,
+  m4Tx9: site.store.campaigns.m4Tx9,
+  r8Hv5: site.store.campaigns.r8Hv5,
 } as const;
 
 type CampaignSource = keyof typeof campaignRedirects;
